@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "fMymRHec4cVWpAH52OLiSxGluUR2NJTboRzD6UOfkuM1e46J3nMxNOB0Cc+ZZWuUmnKk1Qh8FRxBGzd3leFFCw==",
+  "success": true,
+  "projectFilePath": "D:\\Swabhav_Insurance\\Day1\\InsuranceDay1\\InsuranceDay1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\sanket.pal\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\sanket.pal\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\sanket.pal\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "C:\\Users\\sanket.pal\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "C:\\Users\\sanket.pal\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "C:\\Users\\sanket.pal\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
