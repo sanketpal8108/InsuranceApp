@@ -5,7 +5,7 @@ namespace InsuranceDay1.Models
     public class InsurancePlan
     {
         public int Id { get; set; } 
-        public InsuranceScheme insuranceScheme { get; set; }
+        public InsuranceScheme? insuranceScheme { get; set; }
         [ForeignKey("InsuranceScheme")]
         public int InsuranceSchemeId { get; set; }
         public int MinPolicyTerm { get; set; }
@@ -16,10 +16,10 @@ namespace InsuranceDay1.Models
         public double MaxInvestmentAmount { get;set; }
         public double ProfitRatioPercentage { get; set; }
         public bool IsActive { get; set; }
-        public List<Commision> Commisions { get; set; }
-        public List<CustomerInsuranceAccount> CustomerInsuranceAccounts { get; set; }
-        public List<PolicyPayment> PolicyPayments { get; set; }
-        public List<PolicyClaim> PolicyClaims { get; set; }
+        public List<Commision>? Commisions { get; set; }
+        public List<CustomerInsuranceAccount>? CustomerInsuranceAccounts { get; set; }
+        public List<PolicyPayment>? PolicyPayments { get; set; }
+        public List<PolicyClaim>? PolicyClaims { get; set; }
 
 
     }

@@ -1,5 +1,8 @@
 using InsuranceProject.Data;
+using InsuranceProject.Repository;
+using InsuranceProject.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace InsuranceProject
 {
@@ -13,6 +16,17 @@ namespace InsuranceProject
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            builder.Services.AddControllers().AddJsonOptions(x =>
+            {
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
+
+            builder.Services.AddTransient(typeof(IEntityRepository<>), typeof(EntityRepository<>));
+            builder.Services.AddTransient<IAgentService, AgentService>();
+            builder.Services.AddTransient<IAdminService, AdminService>();
+            builder.Services.AddTransient<ICommisionWithdrawalService, CommisionWithdrawalService>();
+            builder.Services.AddTransient<IEmployeeService, EmployeeService>();
 
             builder.Services.AddDbContext<MyContext>(options =>
             {

@@ -42,7 +42,6 @@ namespace InsuranceProject.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -84,7 +83,6 @@ namespace InsuranceProject.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("TotalCommision")
@@ -310,7 +308,6 @@ namespace InsuranceProject.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -587,7 +584,7 @@ namespace InsuranceProject.Migrations
             modelBuilder.Entity("InsuranceDay1.Models.Customer", b =>
                 {
                     b.HasOne("InsuranceDay1.Models.Agent", "Agent")
-                        .WithMany("customers")
+                        .WithMany("Customers")
                         .HasForeignKey("AgentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -708,7 +705,7 @@ namespace InsuranceProject.Migrations
                 {
                     b.Navigation("Commisions");
 
-                    b.Navigation("customers");
+                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("InsuranceDay1.Models.Customer", b =>

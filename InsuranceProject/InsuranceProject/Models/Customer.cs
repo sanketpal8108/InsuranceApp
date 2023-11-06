@@ -9,7 +9,7 @@ namespace InsuranceDay1.Models
         public DateTime DateOfBirth { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-        public Location Location { get; set; }
+        public Location? Location { get; set; }
         [ForeignKey("Location")]
         public int LocationId { get; set; }
         public int MobileNumber { get; set; }
@@ -17,15 +17,15 @@ namespace InsuranceDay1.Models
         public string NomineeName { get; set; }
         public string NomineeRelation { get; set; }
         public bool IsActive { get; set; }
-        public List<Documents> Documents { get; set; }
+        public List<Documents>? Documents { get; set; }
         //[ForeignKey("Documents")]
         //public int DocumentId { get; set; }
-        public List<Query> Queries { get; set; }
-        public List<CustomerInsuranceAccount> CustomerInsuranceAccounts { get; set;}
-        public List<PolicyPayment> PolicyPayments { get; set; }
-        public List<PolicyClaim> PolicyClaims { get; set; }
+        public List<Query>? Queries { get; set; }
+        public List<CustomerInsuranceAccount>? CustomerInsuranceAccounts { get; set;}
+        public List<PolicyPayment>? PolicyPayments { get; set; }
+        public List<PolicyClaim>? PolicyClaims { get; set; }
 
-        public Agent Agent { get; set; }
+        public Agent? Agent { get; set; }
         [ForeignKey("Agent")]
         public int AgentId { get; set; }
 

@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public string InsuranceTypeName { get; set; }
         public bool IsActive { get; set; }
-        public List<InsuranceScheme> InsuranceSchemes { get; set; }
+        public List<InsuranceScheme>? InsuranceSchemes { get; set; }
     }
 }
