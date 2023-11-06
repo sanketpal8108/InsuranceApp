@@ -25,5 +25,9 @@ namespace InsuranceDay1.Models
         public List<PolicyPayment> PolicyPayments { get; set; }
         public List<PolicyClaim> PolicyClaims { get; set; }
 
+        public Agent Agent { get; set; }
+        [ForeignKey("Agent")]
+        public int AgentId { get; set; }
+
     }
 }

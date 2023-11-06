@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsuranceProject.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20231105173045_v1")]
+    [Migration("20231106071417_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -169,6 +169,9 @@ namespace InsuranceProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AgentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -206,6 +209,8 @@ namespace InsuranceProject.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AgentId");
 
                     b.HasIndex("LocationId");
 
@@ -569,11 +574,19 @@ namespace InsuranceProject.Migrations
 
             modelBuilder.Entity("InsuranceDay1.Models.Customer", b =>
                 {
+                    b.HasOne("InsuranceDay1.Models.Agent", "Agent")
+                        .WithMany("customers")
+                        .HasForeignKey("AgentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("InsuranceDay1.Models.Location", "Location")
                         .WithMany("Customers")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Agent");
 
                     b.Navigation("Location");
                 });
@@ -682,6 +695,8 @@ namespace InsuranceProject.Migrations
             modelBuilder.Entity("InsuranceDay1.Models.Agent", b =>
                 {
                     b.Navigation("Commisions");
+
+                    b.Navigation("customers");
                 });
 
             modelBuilder.Entity("InsuranceDay1.Models.Customer", b =>

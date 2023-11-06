@@ -14,5 +14,7 @@
         public bool IsActive { get; set; }
         public List<Commision> Commisions { get; set; }
         public double TotalCommision { get; set; } 
+
+        public List<Customer> customers { get; set; }
     }
 }

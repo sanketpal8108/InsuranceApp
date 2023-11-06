@@ -14,7 +14,7 @@ namespace InsuranceDay1.Models
         public double PaidAmount { get; set; }
         public double TaxAmount { get; set; }
         public double TotalAmount {get; set; }
-        public DateTime PaidDate { get; } = DateTime.Now;
+        public DateTime PaidDate { get; set; }
         public string TransactionType { get; set; }
 
         public bool IsActive { get; set; }

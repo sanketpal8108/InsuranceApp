@@ -150,11 +150,18 @@ namespace InsuranceProject.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NomineeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NomineeRelation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    AgentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Customers_Agents_AgentId",
+                        column: x => x.AgentId,
+                        principalTable: "Agents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Customers_Locations_LocationId",
                         column: x => x.LocationId,
@@ -388,6 +395,11 @@ namespace InsuranceProject.Migrations
                 column: "InsurancePlanId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Customers_AgentId",
+                table: "Customers",
+                column: "AgentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Customers_LocationId",
                 table: "Customers",
                 column: "LocationId");
@@ -464,9 +476,6 @@ namespace InsuranceProject.Migrations
                 name: "Queries");
 
             migrationBuilder.DropTable(
-                name: "Agents");
-
-            migrationBuilder.DropTable(
                 name: "InsurancePlans");
 
             migrationBuilder.DropTable(
@@ -474,6 +483,9 @@ namespace InsuranceProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "InsuranceSchemes");
+
+            migrationBuilder.DropTable(
+                name: "Agents");
 
             migrationBuilder.DropTable(
                 name: "Locations");

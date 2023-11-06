@@ -11,7 +11,7 @@ namespace InsuranceDay1.Models
         public InsurancePlan InsurancePlan { get; set; }
         [ForeignKey("InsurancePlan")]
         public int InsurancePlanId { get; set; }
-        public DateTime InsuranceCreationDate { get; } = DateTime.Now;
+        public DateTime InsuranceCreationDate { get; set; }
         public DateTime MaturityDate { get; set; }
         public int PolicyTerm { get; set; }
         public double TotalPremium { get; set; }
