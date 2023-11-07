@@ -1,4 +1,5 @@
 using InsuranceProject.Data;
+using InsuranceProject.Middleware;
 using InsuranceProject.Repository;
 using InsuranceProject.Service;
 using InsuranceProject.Services;
@@ -62,6 +63,7 @@ namespace InsuranceProject
 
             app.UseAuthorization();
 
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.MapControllers();
 

@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(adminDTO);
             }
-            return BadRequest("Contacts not found");
+            throw new  EntityNotFoundError("Admins not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -36,7 +37,7 @@ namespace InsuranceProject.Controllers
             var admin = _adminService.Get(id);
             if (admin == null)
             {
-                return BadRequest("Contacts not found");
+                throw new  EntityNotFoundError("Admin not found");
             }
             return Ok(ConvertToDTO(admin));
         }
@@ -46,7 +47,7 @@ namespace InsuranceProject.Controllers
             var admin = ConvertToModel(adminDto);
             var AdminId = _adminService.Add(admin);
             if (AdminId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(AdminId);
         }
         [HttpPut]
@@ -59,7 +60,7 @@ namespace InsuranceProject.Controllers
                 var modifiedAdmin = _adminService.Update(updatedAdmin);
                 return Ok(ConvertToDTO(modifiedAdmin));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No contact found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -70,7 +71,7 @@ namespace InsuranceProject.Controllers
                 _adminService.Delete(agent);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No contact found to delete");
         }
         private Admin ConvertToModel(AdminDto agentDto)
         {

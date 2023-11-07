@@ -17,7 +17,7 @@ namespace InsuranceProject.Controllers
         {
             _documentService = documentService;
         }
-        [HttpGet]
+        [HttpGet("getAll")]
         public IActionResult Get()
         {
             var documentDTO = new List<DocumentsDto>();
@@ -42,7 +42,7 @@ namespace InsuranceProject.Controllers
             }
             return Ok(ConvertToDTO(document));
         }
-        [HttpPost]
+        [HttpPost("Add")]
         public IActionResult Add(DocumentsDto documentDto)
         {
             var document = ConvertToModel(documentDto);
@@ -51,7 +51,7 @@ namespace InsuranceProject.Controllers
                 return BadRequest("Some errors Occurred");
             return Ok(documentId);
         }
-        [HttpPut]
+        [HttpPut("Update")]
         public IActionResult Update(DocumentsDto documentDto)
         {
             var documentDTOToUpdate = _documentService.Check(documentDto.Id);
