@@ -80,6 +80,7 @@ namespace InsuranceProject.Controllers
                 FirstName = agentDto.FirstName,
                 LastName = agentDto.LastName,
                 UserName = agentDto.UserName,
+                Password = agentDto.Password,
                 IsActive = true
 
             };
@@ -92,6 +93,7 @@ namespace InsuranceProject.Controllers
                 FirstName = admin.FirstName,
                 LastName = admin.LastName,
                 UserName = admin.UserName,
+                Password = admin.Password,
                
 
             };

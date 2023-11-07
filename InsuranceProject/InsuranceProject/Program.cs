@@ -1,5 +1,6 @@
 using InsuranceProject.Data;
 using InsuranceProject.Repository;
+using InsuranceProject.Service;
 using InsuranceProject.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -27,6 +28,19 @@ namespace InsuranceProject
             builder.Services.AddTransient<IAdminService, AdminService>();
             builder.Services.AddTransient<ICommisionWithdrawalService, CommisionWithdrawalService>();
             builder.Services.AddTransient<IEmployeeService, EmployeeService>();
+            builder.Services.AddTransient<ICustomerService, CustomerService>();
+            builder.Services.AddTransient<IDocumentService, DocumentService>();
+            builder.Services.AddTransient<ILocationService, LocationService>();
+            builder.Services.AddTransient<IQueryService, QueryService>();
+            builder.Services.AddTransient<IPolicyPaymentService, PolicyPaymentService>();
+            builder.Services.AddTransient<ICommisionService,CommisionService>();
+            builder.Services.AddTransient<ICustomerInsuranceAccountService, CustomerInsuranceAccountService>();
+            builder.Services.AddTransient<IInsurancePlanService,InsurancePlanService >();
+            builder.Services.AddTransient<IInsuranceSchemeService, InsuranceSchemeService>();
+            builder.Services.AddTransient<IInsuranceTypeService, InsuranceTypeService>();
+            builder.Services.AddTransient<IPolicyClaimService, PolicyClaimService>();
+            
+
 
             builder.Services.AddDbContext<MyContext>(options =>
             {

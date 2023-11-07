@@ -7,7 +7,7 @@ namespace InsuranceDay1.Models
         public int Id { get; set; }
         public string QueryTitle { get; set; }
         public string QueryMessage { get; set; }
-        public DateTime QueryDate { get; set; } 
+        public DateTime QueryDate { get; set; } = DateTime.Now;
         public string Reply { get; set; }
         public Customer? Customer { get; set; }
         [ForeignKey("Customer")]

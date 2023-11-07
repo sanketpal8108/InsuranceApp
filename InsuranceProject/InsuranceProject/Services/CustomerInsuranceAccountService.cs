@@ -3,7 +3,7 @@ using InsuranceProject.Repository;
 
 namespace InsuranceProject.Services
 {
-    public class CustomerInsuranceAccountService:ICustomerInsurnaceAccountService
+    public class CustomerInsuranceAccountService:ICustomerInsuranceAccountService
     {
         private IEntityRepository<CustomerInsuranceAccount> _entityRepository;
 

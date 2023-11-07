@@ -7,7 +7,8 @@ namespace InsuranceDay1.Models
         public int Id { get; set; }
         public string DocumentType { get; set; } 
         //Document Upload Attribute
-        public string DocumentInformation { get; set; } //If upload option is not available
+        //public string DocumentInformation { get; set; } //If upload option is not available
+        public byte[] DocumentData { get; set; }
         public Customer? Customer { get; set; }
         [ForeignKey("Customer")]
 

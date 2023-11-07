@@ -2,7 +2,7 @@
 
 namespace InsuranceProject.Services
 {
-    public interface ICustomerInsurnaceAccountService
+    public interface ICustomerInsuranceAccountService
     {
         public List<CustomerInsuranceAccount> GetAll();
         public CustomerInsuranceAccount Get(int id);

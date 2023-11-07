@@ -84,6 +84,7 @@ namespace InsuranceProject.Controllers
                 UserName = agentDto.UserName,
                 Commision = agentDto.Commision,
                 TotalCommision = agentDto.TotalCommision,
+                Password = agentDto.Password,
                 IsActive = true
 
             };
@@ -96,6 +97,7 @@ namespace InsuranceProject.Controllers
                 FirstName = agent.FirstName,
                 LastName = agent.LastName,
                 MobileNumber = agent.MobileNumber,
+                Password = agent.Password,
                 Email = agent.Email,
                 UserName = agent.UserName,
                 Commision = agent.Commision,
