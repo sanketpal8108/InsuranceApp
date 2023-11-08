@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(commisionWithdrawalDto);
             }
-            return BadRequest("Contacts not found");
+            throw new EntityNotFoundError("CommisionWithdrawal not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -36,7 +37,7 @@ namespace InsuranceProject.Controllers
             var commisionWithdrawal = _commissionWithdrawalService.Get(id);
             if (commisionWithdrawal == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("CommisionWithdrawal not found");
             }
             return Ok(ConvertToDTO(commisionWithdrawal));
         }
@@ -46,7 +47,7 @@ namespace InsuranceProject.Controllers
             var commisionWithdrawal = ConvertToModel(commisionWithdrawalDto);
             var CommisionWithdrawalId = _commissionWithdrawalService.Add(commisionWithdrawal);
             if (CommisionWithdrawalId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(CommisionWithdrawalId);
         }
         [HttpPut]
@@ -59,7 +60,7 @@ namespace InsuranceProject.Controllers
                 var modifiedcommisionWithdrawal = _commissionWithdrawalService.Update(updatedcommisionWithdrawal);
                 return Ok(ConvertToDTO(modifiedcommisionWithdrawal));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No CommisionWithdrawal found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -70,7 +71,7 @@ namespace InsuranceProject.Controllers
                 _commissionWithdrawalService.Delete(commisionWithdrawal);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No CommisionWithdrawal found to delete");
         }
         private CommisionWithdrawal ConvertToModel(CommisionWithdrawalDto CommisionwithdrawalDto)
         {

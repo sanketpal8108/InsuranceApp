@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(commisionDTO);
             }
-            return BadRequest("Location not found");
+            throw new EntityNotFoundError("Commision not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -36,7 +37,7 @@ namespace InsuranceProject.Controllers
             var commision = _commisionService.Get(id);
             if (commision == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("Commision not found");
             }
             return Ok(ConvertToDTO(commision));
         }
@@ -46,7 +47,7 @@ namespace InsuranceProject.Controllers
             var commision = ConvertToModel(commisionDto);
             var commisionId = _commisionService.Add(commision);
             if (commisionId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(commisionId);
         }
         [HttpPut]
@@ -59,7 +60,7 @@ namespace InsuranceProject.Controllers
                 var modifiedCommision = _commisionService.Update(updatedCommision);
                 return Ok(ConvertToDTO(modifiedCommision));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No Commision found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -70,7 +71,7 @@ namespace InsuranceProject.Controllers
                 _commisionService.Delete(commision);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No Commision found to delete");
         }
         private Commision ConvertToModel(CommisionDto commisionDto)
         {

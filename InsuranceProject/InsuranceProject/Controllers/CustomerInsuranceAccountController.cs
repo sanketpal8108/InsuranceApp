@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(customerInsuranceAccountDTO);
             }
-            return BadRequest("Location not found");
+            throw new EntityNotFoundError("CustomerInsuranceAccount not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -36,7 +37,7 @@ namespace InsuranceProject.Controllers
             var customerInsuranceAccount = _customerInsuranceAccountService.Get(id);
             if (customerInsuranceAccount == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("CustomerInsuranceAccount not found");
             }
             return Ok(ConvertToDTO(customerInsuranceAccount));
         }
@@ -46,7 +47,7 @@ namespace InsuranceProject.Controllers
             var customerInsuranceAccount = ConvertToModel(customerInsuranceAccountDto);
             var customerInsuranceAccountId = _customerInsuranceAccountService.Add(customerInsuranceAccount);
             if (customerInsuranceAccountId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(customerInsuranceAccountId);
         }
         [HttpPut]
@@ -59,7 +60,7 @@ namespace InsuranceProject.Controllers
                 var modifiedCustomerInsuranceAccount = _customerInsuranceAccountService.Update(updatedCustomerInsuranceAccount);
                 return Ok(ConvertToDTO(modifiedCustomerInsuranceAccount));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No CustomerInsuranceAccount found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -70,7 +71,7 @@ namespace InsuranceProject.Controllers
                 _customerInsuranceAccountService.Delete(customerInsuranceAccount);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No CustomerInsuranceAccount found to delete");
         }
         private CustomerInsuranceAccount ConvertToModel(CustomerInsuranceAccountDto customerInsuranceAccountDto)
         {

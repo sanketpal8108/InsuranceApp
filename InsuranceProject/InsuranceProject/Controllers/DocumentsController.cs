@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(documentDTO);
             }
-            return BadRequest("Location not found");
+            throw new EntityNotFoundError("Documents not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -38,7 +39,7 @@ namespace InsuranceProject.Controllers
             var document = _documentService.Get(id);
             if (document == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("Documents not found");
             }
             return Ok(ConvertToDTO(document));
         }
@@ -48,7 +49,7 @@ namespace InsuranceProject.Controllers
             var document = ConvertToModel(documentDto);
             var documentId = _documentService.Add(document);
             if (documentId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(documentId);
         }
         [HttpPut("Update")]
@@ -61,7 +62,7 @@ namespace InsuranceProject.Controllers
                 var modifiedDocument = _documentService.Update(updatedDocument);
                 return Ok(ConvertToDTO(modifiedDocument));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No Documents found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -72,7 +73,7 @@ namespace InsuranceProject.Controllers
                 _documentService.Delete(document);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No Documents found to delete");
         }
         private Documents ConvertToModel(DocumentsDto documentDto)
         {

@@ -15,5 +15,7 @@
         public string NomineeRelation { get; set; }
         public int LocationId { get; set; }
         public int AgentId { get; set; }
+
+        public int RoleId { get; set; }
     }
 }

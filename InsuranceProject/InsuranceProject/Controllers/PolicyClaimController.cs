@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Service;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(policyClaimDTO);
             }
-            return BadRequest("Contacts not found");
+            throw new EntityNotFoundError("PolicyClaim not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -37,7 +38,7 @@ namespace InsuranceProject.Controllers
             var policyClaim = _policyClaimService.Get(id);
             if (policyClaim == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("PolicyClaim not found");
             }
             return Ok(ConvertToDTO(policyClaim));
         }
@@ -47,7 +48,7 @@ namespace InsuranceProject.Controllers
             var policyClaim = ConvertToModel(policyClaimDto);
             var policyClaimId = _policyClaimService.Add(policyClaim);
             if (policyClaimId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(policyClaimId);
         }
         [HttpPut]
@@ -60,7 +61,7 @@ namespace InsuranceProject.Controllers
                 var modifiedPolicyClaim = _policyClaimService.Update(updatedPolicyClaim);
                 return Ok(ConvertToDTO(modifiedPolicyClaim));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No PolicyClaim found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -71,7 +72,7 @@ namespace InsuranceProject.Controllers
                 _policyClaimService.Delete(policyClaim);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No PolicyClaim found to delete");
         }
         private PolicyClaim ConvertToModel(PolicyClaimDto policyClaimDto)
         {

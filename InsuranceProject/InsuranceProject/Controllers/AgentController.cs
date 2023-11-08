@@ -1,6 +1,8 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +17,7 @@ namespace InsuranceProject.Controllers
         {
             _agentService = agentService;
         }
-        [HttpGet]
+        [HttpGet,Authorize(Roles ="Admin")]
         public IActionResult Get()
         {
             var agentDTO = new List<AgentDto>();
@@ -28,7 +30,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(agentDTO);
             }
-            return BadRequest("Contacts not found");
+            throw new EntityNotFoundError("Agent not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -36,7 +38,7 @@ namespace InsuranceProject.Controllers
             var agent = _agentService.Get(id);
             if (agent == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("Agent not found");
             }
             return Ok(ConvertToDTO(agent));
         }
@@ -46,7 +48,7 @@ namespace InsuranceProject.Controllers
             var agent = ConvertToModel(agentDto);
             var agentId = _agentService.Add(agent);
             if (agentId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(agentId);
         }
         [HttpPut]
@@ -59,7 +61,7 @@ namespace InsuranceProject.Controllers
                 var modifiedAgent = _agentService.Update(updatedAgent);
                 return Ok(ConvertToDTO(modifiedAgent));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No Agent found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -70,7 +72,7 @@ namespace InsuranceProject.Controllers
                 _agentService.Delete(agent);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No Agent found to delete");
         }
         private Agent ConvertToModel(AgentDto agentDto)
         {
@@ -85,7 +87,8 @@ namespace InsuranceProject.Controllers
                 Commision = agentDto.Commision,
                 TotalCommision = agentDto.TotalCommision,
                 Password = agentDto.Password,
-                IsActive = true
+                IsActive = true,
+                RoleId = agentDto.RoleId,
 
             };
         }
@@ -104,7 +107,7 @@ namespace InsuranceProject.Controllers
                 TotalCommision = agent.TotalCommision,
                 CountCustomer = agent.Customers != null ? agent.Customers.Count : 0,
                 CountCommision=agent.Commisions != null ? agent.Commisions.Count : 0,
-
+                RoleId=agent.RoleId,
             };
         }
     }

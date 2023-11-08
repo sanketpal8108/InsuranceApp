@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Service;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(locationDTO);
             }
-            return BadRequest("Location not found");
+            throw new EntityNotFoundError("Location not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -37,7 +38,7 @@ namespace InsuranceProject.Controllers
             var location = _locationService.Get(id);
             if (location == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("Location not found");
             }
             return Ok(ConvertToDTO(location));
         }
@@ -47,7 +48,7 @@ namespace InsuranceProject.Controllers
             var location = ConvertToModel(locationDto);
             var locationId = _locationService.Add(location);
             if (locationId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(locationId);
         }
         [HttpPut]
@@ -60,7 +61,7 @@ namespace InsuranceProject.Controllers
                 var modifiedLocation = _locationService.Update(updatedLocation);
                 return Ok(ConvertToDTO(modifiedLocation));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No Location found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -71,7 +72,7 @@ namespace InsuranceProject.Controllers
                 _locationService.Delete(location);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No Location found to delete");
         }
         private Location ConvertToModel(LocationDto locationDto)
         {

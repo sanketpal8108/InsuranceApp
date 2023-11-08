@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(employeeDTO);
             }
-            return BadRequest("Contacts not found");
+            throw new EntityNotFoundError("Employee not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -36,7 +37,7 @@ namespace InsuranceProject.Controllers
             var employee = _employeeService.Get(id);
             if (employee == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("Employee not found");
             }
             return Ok(ConvertToDTO(employee));
         }
@@ -46,7 +47,7 @@ namespace InsuranceProject.Controllers
             var employee = ConvertToModel(employeeDto);
             var employeeId = _employeeService.Add(employee);
             if (employeeId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(employeeId);
         }
         [HttpPut]
@@ -59,7 +60,7 @@ namespace InsuranceProject.Controllers
                 var modifiedEmployee = _employeeService.Update(updatedEmployee);
                 return Ok(ConvertToDTO(modifiedEmployee));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No Employee found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -70,7 +71,7 @@ namespace InsuranceProject.Controllers
                 _employeeService.Delete(employee);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No Employee found to delete");
         }
         private Employee ConvertToModel(EmployeeDto employeeDto)
         {
@@ -81,7 +82,8 @@ namespace InsuranceProject.Controllers
                 LastName = employeeDto.LastName,
                 UserName = employeeDto.UserName,
                 Password = employeeDto.Password,
-                IsActive = true
+                IsActive = true,
+                RoleId = employeeDto.RoleId,
 
             };
         }
@@ -94,6 +96,7 @@ namespace InsuranceProject.Controllers
                 LastName = employee.LastName,
                 UserName = employee.UserName,
                 Password = employee.Password,
+                RoleId= employee.RoleId,
 
 
             };

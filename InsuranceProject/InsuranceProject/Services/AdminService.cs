@@ -1,4 +1,5 @@
 ﻿using InsuranceDay1.Models;
+using InsuranceProject.Data;
 using InsuranceProject.Repository;
 
 namespace InsuranceProject.Services
@@ -6,10 +7,12 @@ namespace InsuranceProject.Services
     public class AdminService:IAdminService
     {
         private IEntityRepository<Admin> _entityRepository;
+        private MyContext _context;
 
-        public AdminService(IEntityRepository<Admin> entityRepository)
+        public AdminService(IEntityRepository<Admin> entityRepository,MyContext myContext)
         {
             _entityRepository = entityRepository;
+            _context = myContext;
         }
         
         public List<Admin> GetAll()
@@ -44,6 +47,16 @@ namespace InsuranceProject.Services
         public void Delete(Admin admin)
         {
             _entityRepository.Delete(admin);
+        }
+
+        public Admin FindAdmin(string username)
+        {
+            return _context.Admins.Where(user => user.UserName == username).FirstOrDefault();
+        }
+
+        public string GetRoleName(Admin admin)
+        {
+            return _context.Roles.Where(role => role.Id == admin.RoleId).FirstOrDefault().RoleName;
         }
     }
 }

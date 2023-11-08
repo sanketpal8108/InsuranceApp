@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using InsuranceProject.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InsuranceDay1.Models
 {
@@ -29,6 +30,10 @@ namespace InsuranceDay1.Models
         public Agent? Agent { get; set; }
         [ForeignKey("Agent")]
         public int AgentId { get; set; }
+
+        public Role Role { get; set; }
+        [ForeignKey("Role")]
+        public int RoleId { get; set; }
 
     }
 }

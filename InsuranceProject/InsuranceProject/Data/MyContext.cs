@@ -1,4 +1,5 @@
 ﻿using InsuranceDay1.Models;
+using InsuranceProject.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace InsuranceProject.Data
@@ -32,6 +33,8 @@ namespace InsuranceProject.Data
         public DbSet<PolicyClaim> PolicyClaims { get; set; }
 
         public DbSet<PolicyPayment> PolicyPayments { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
 
         public DbSet<Query> Queries { get; set; }
 

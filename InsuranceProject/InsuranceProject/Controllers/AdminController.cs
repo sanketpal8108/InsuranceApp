@@ -2,6 +2,7 @@
 using InsuranceProject.DTO;
 using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
+using InsuranceProject.Token_Creation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,12 @@ namespace InsuranceProject.Controllers
     public class AdminController : ControllerBase
     {
         private IAdminService _adminService;
-        public AdminController(IAdminService adminService)
+        private IConfiguration _configuration;
+        public AdminController(IAdminService adminService, IConfiguration configuration)
         {
             _adminService = adminService;
+            _configuration = configuration;
+
         }
         [HttpGet]
         public IActionResult Get()
@@ -45,6 +49,7 @@ namespace InsuranceProject.Controllers
         public IActionResult Add(AdminDto adminDto)
         {
             var admin = ConvertToModel(adminDto);
+            admin.Password = BCrypt.Net.BCrypt.HashPassword(adminDto.Password);
             var AdminId = _adminService.Add(admin);
             if (AdminId == null)
                 throw new EntityInsertError("Some errors Occurred");
@@ -60,7 +65,7 @@ namespace InsuranceProject.Controllers
                 var modifiedAdmin = _adminService.Update(updatedAdmin);
                 return Ok(ConvertToDTO(modifiedAdmin));
             }
-            throw new EntityNotFoundError("No contact found to update");
+            throw new EntityNotFoundError("No Admin found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -71,7 +76,26 @@ namespace InsuranceProject.Controllers
                 _adminService.Delete(agent);
                 return Ok(id);
             }
-            throw new EntityNotFoundError("No contact found to delete");
+            throw new EntityNotFoundError("No Admin found to delete");
+        }
+
+        [HttpPost("Login")]
+
+        public IActionResult Login(AdminDto adminDto)
+        {
+            var admin = _adminService.FindAdmin(adminDto.UserName);
+            admin.RoleId = 1;
+            var role = _adminService.GetRoleName(admin);
+            if (admin != null)
+            {
+                if (BCrypt.Net.BCrypt.Verify(adminDto.Password, admin.Password))
+                {
+                    //return Ok("Login Successful");
+                    string jwt = CreateToken<Admin>.CreateTokens(admin.UserName,role,_configuration);
+                    return Ok(jwt);
+                }
+            }
+            return BadRequest("UserName/Password dosesnt exist");
         }
         private Admin ConvertToModel(AdminDto agentDto)
         {
@@ -82,6 +106,7 @@ namespace InsuranceProject.Controllers
                 LastName = agentDto.LastName,
                 UserName = agentDto.UserName,
                 Password = agentDto.Password,
+                RoleId = 1,
                 IsActive = true
 
             };
@@ -95,7 +120,7 @@ namespace InsuranceProject.Controllers
                 LastName = admin.LastName,
                 UserName = admin.UserName,
                 Password = admin.Password,
-               
+               //RoleId= admin.RoleId,
 
             };
         }

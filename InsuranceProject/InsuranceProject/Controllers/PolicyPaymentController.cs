@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Service;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(policypayDTO);
             }
-            return BadRequest("Contacts not found");
+            throw new EntityNotFoundError("PolicyPayment not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -37,7 +38,7 @@ namespace InsuranceProject.Controllers
             var policypay = _policypaymentService.Get(id);
             if (policypay == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("PolicyPayment not found");
             }
             return Ok(ConvertToDTO(policypay));
         }
@@ -47,7 +48,7 @@ namespace InsuranceProject.Controllers
             var policypay = ConvertToModel(policypayDto);
             var policypayId = _policypaymentService.Add(policypay);
             if (policypayId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(policypayId);
         }
         [HttpPut]
@@ -60,7 +61,7 @@ namespace InsuranceProject.Controllers
                 var modifiedPolicypay = _policypaymentService.Update(updatedpolicypay);
                 return Ok(ConvertToDTO(modifiedPolicypay));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No PolicyPayment found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -71,7 +72,7 @@ namespace InsuranceProject.Controllers
                 _policypaymentService.Delete(policypay);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No PolicyPayment found to delete");
         }
         private PolicyPayment ConvertToModel(PolicyPaymentDto policypaymentDto)
         {

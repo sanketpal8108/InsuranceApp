@@ -85,3 +85,5 @@ D:\MVC\Final Project\InsuranceProject\InsuranceProject\bin\Debug\net6.0\runtimes
 D:\MVC\Final Project\InsuranceProject\InsuranceProject\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\MVC\Final Project\InsuranceProject\InsuranceProject\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
 D:\MVC\Final Project\InsuranceProject\InsuranceProject\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\MVC\Final Project\InsuranceProject\InsuranceProject\bin\Debug\net6.0\BCrypt.Net-Next.dll
+D:\MVC\Final Project\InsuranceProject\InsuranceProject\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

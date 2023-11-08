@@ -51,5 +51,7 @@ namespace InsuranceProject.Repository
 
             _context.SaveChanges();
         }
+
+       
     }
 }

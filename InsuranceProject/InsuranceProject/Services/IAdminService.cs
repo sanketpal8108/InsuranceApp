@@ -14,5 +14,9 @@ namespace InsuranceProject.Services
 
         public void Delete(Admin admin);
 
+        public Admin FindAdmin(string username);
+
+        public string GetRoleName(Admin admin);
+
     }
 }

@@ -15,7 +15,8 @@
         public int CountCustomer { get; set; } = 0;
 
         public int CountCommision { get; set; } = 0;
+        public int RoleId { get; set; }
 
-       
+
     }
 }

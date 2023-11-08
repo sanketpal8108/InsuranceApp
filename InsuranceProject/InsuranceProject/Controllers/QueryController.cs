@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Service;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(queryDTO);
             }
-            return BadRequest("Contacts not found");
+            throw new EntityNotFoundError("Query not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -37,7 +38,7 @@ namespace InsuranceProject.Controllers
             var query = _queryService.Get(id);
             if (query == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("Query not found");
             }
             return Ok(ConvertToDTO(query));
         }
@@ -47,7 +48,7 @@ namespace InsuranceProject.Controllers
             var query = ConvertToModel(queryDto);
             var QueryId = _queryService.Add(query);
             if (QueryId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(QueryId);
         }
         [HttpPut]
@@ -60,7 +61,7 @@ namespace InsuranceProject.Controllers
                 var modifiedQuery = _queryService.Update(updatedQuery);
                 return Ok(ConvertToDTO(modifiedQuery));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No Query found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -71,7 +72,7 @@ namespace InsuranceProject.Controllers
                 _queryService.Delete(query);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No Query found to delete");
         }
         private Query ConvertToModel(QueryDto queryDto)
         {

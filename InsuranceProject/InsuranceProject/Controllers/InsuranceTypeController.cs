@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Service;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(insuranceTypeDTO);
             }
-            return BadRequest("Location not found");
+            throw new EntityNotFoundError("InsuranceType not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -37,7 +38,7 @@ namespace InsuranceProject.Controllers
             var insuranceType = _insuranceTypeService.Get(id);
             if (insuranceType == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("InsuranceType not found");
             }
             return Ok(ConvertToDTO(insuranceType));
         }
@@ -47,7 +48,7 @@ namespace InsuranceProject.Controllers
             var insuranceType = ConvertToModel(insuranceTypeDto);
             var insuranceTypeId = _insuranceTypeService.Add(insuranceType);
             if (insuranceTypeId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(insuranceTypeId);
         }
         [HttpPut]
@@ -60,7 +61,7 @@ namespace InsuranceProject.Controllers
                 var modifiedInsuranceType = _insuranceTypeService.Update(updatedInsuranceType);
                 return Ok(ConvertToDTO(modifiedInsuranceType));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No InsuranceType found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -71,7 +72,7 @@ namespace InsuranceProject.Controllers
                 _insuranceTypeService.Delete(insuranceType);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No InsuranceType found to delete");
         }
         private InsuranceType ConvertToModel(InsuranceTypeDto insuranceTypeDto)
         {

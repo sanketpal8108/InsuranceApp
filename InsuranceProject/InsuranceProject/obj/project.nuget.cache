@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "3vNCfwDmIU81tAoBPbZi+KEhee73yB0imiACE9qLmRNLd6+7vQ5MjC0fKC75sJgQhvLxMFeNLr7tSBraa067vw==",
+  "dgSpecHash": "tMV5UEAp3HNJOKYHqqhFIm4tb8gPtb8SJECaG3VFejJqptDkFjO/AiS/KQwLKn10/ti/RSePT+vZ1I+CyQMoJA==",
   "success": true,
   "projectFilePath": "D:\\MVC\\Final Project\\InsuranceProject\\InsuranceProject\\InsuranceProject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\shreyas.c\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\shreyas.c\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\shreyas.c\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\shreyas.c\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\shreyas.c\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.24\\microsoft.aspnetcore.authentication.jwtbearer.6.0.24.nupkg.sha512",
     "C:\\Users\\shreyas.c\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\shreyas.c\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\shreyas.c\\.nuget\\packages\\microsoft.data.sqlclient\\5.1.1\\microsoft.data.sqlclient.5.1.1.nupkg.sha512",

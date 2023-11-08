@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Service;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(insuranceSchemeDTO);
             }
-            return BadRequest("Location not found");
+            throw new EntityNotFoundError("InsuranceScheme not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -37,7 +38,7 @@ namespace InsuranceProject.Controllers
             var insuranceScheme = _insuranceSchemeService.Get(id);
             if (insuranceScheme == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("InsuranceScheme not found");
             }
             return Ok(ConvertToDTO(insuranceScheme));
         }
@@ -47,7 +48,7 @@ namespace InsuranceProject.Controllers
             var insuranceScheme = ConvertToModel(insuranceSchemeDto);
             var insuranceSchemeId = _insuranceSchemeService.Add(insuranceScheme);
             if (insuranceSchemeId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(insuranceSchemeId);
         }
         [HttpPut]
@@ -60,7 +61,7 @@ namespace InsuranceProject.Controllers
                 var modifiedInsuranceScheme = _insuranceSchemeService.Update(updatedInsuranceScheme);
                 return Ok(ConvertToDTO(modifiedInsuranceScheme));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No InsuranceScheme found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -71,7 +72,7 @@ namespace InsuranceProject.Controllers
                 _insuranceSchemeService.Delete(insuranceScheme);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No InsuranceScheme found to delete");
         }
         private InsuranceScheme ConvertToModel(InsuranceSchemeDto insuranceSchemeDto)
         {

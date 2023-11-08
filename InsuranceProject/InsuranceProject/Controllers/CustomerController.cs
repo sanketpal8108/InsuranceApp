@@ -1,5 +1,6 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.DTO;
+using InsuranceProject.Exceptions;
 using InsuranceProject.Service;
 using InsuranceProject.Services;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace InsuranceProject.Controllers
                 }
                 return Ok(customerDTO);
             }
-            return BadRequest("Location not found");
+            throw new EntityNotFoundError("Customer not found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -37,7 +38,7 @@ namespace InsuranceProject.Controllers
             var customer = _customerService.Get(id);
             if (customer == null)
             {
-                return BadRequest("Contacts not found");
+                throw new EntityNotFoundError("Customer not found");
             }
             return Ok(ConvertToDTO(customer));
         }
@@ -47,7 +48,7 @@ namespace InsuranceProject.Controllers
             var customer = ConvertToModel(customerDto);
             var customerId = _customerService.Add(customer);
             if (customerId == null)
-                return BadRequest("Some errors Occurred");
+                throw new EntityInsertError("Some errors Occurred");
             return Ok(customerId);
         }
         [HttpPut]
@@ -60,7 +61,7 @@ namespace InsuranceProject.Controllers
                 var modifiedCustomer = _customerService.Update(updatedCustomer);
                 return Ok(ConvertToDTO(modifiedCustomer));
             }
-            return BadRequest("No contact found to update");
+            throw new EntityNotFoundError("No Customer found to update");
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
@@ -71,7 +72,7 @@ namespace InsuranceProject.Controllers
                 _customerService.Delete(customer);
                 return Ok(id);
             }
-            return BadRequest("No contact found to delete");
+            throw new EntityNotFoundError("No Customer found to delete");
         }
         private Customer ConvertToModel(CustomerDto customerDto)
         {
@@ -89,6 +90,7 @@ namespace InsuranceProject.Controllers
                 NomineeRelation = customerDto.NomineeRelation,
                 LocationId = customerDto.LocationId,
                 AgentId = customerDto.AgentId,
+                RoleId = customerDto.RoleId,
 
                 IsActive = true
 
@@ -110,6 +112,7 @@ namespace InsuranceProject.Controllers
                NomineeRelation= customer.NomineeRelation,
                LocationId = customer.LocationId,
                AgentId = customer.AgentId,
+               RoleId = customer.RoleId,
 
             };
         }
