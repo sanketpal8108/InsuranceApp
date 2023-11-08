@@ -2,6 +2,7 @@
 using InsuranceProject.DTO;
 using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

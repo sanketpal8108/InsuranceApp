@@ -84,7 +84,7 @@ namespace InsuranceProject.Controllers
         public IActionResult Login(AdminDto adminDto)
         {
             var admin = _adminService.FindAdmin(adminDto.UserName);
-            admin.RoleId = 1;
+            //admin.RoleId = 1;
             var role = _adminService.GetRoleName(admin);
             if (admin != null)
             {

@@ -2,6 +2,7 @@
 using InsuranceProject.DTO;
 using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ namespace InsuranceProject.Controllers
         {
             _commissionWithdrawalService = commissionWithdrawalService;
         }
-        [HttpGet]
+        [HttpGet,Authorize(Roles = "Agent")]
         public IActionResult Get()
         {
             var commisionWithdrawalDto = new List<CommisionWithdrawalDto>();

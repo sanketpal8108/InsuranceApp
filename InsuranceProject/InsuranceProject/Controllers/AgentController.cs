@@ -2,6 +2,7 @@
 using InsuranceProject.DTO;
 using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
+using InsuranceProject.Token_Creation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,12 @@ namespace InsuranceProject.Controllers
     public class AgentController : ControllerBase
     {
         private IAgentService _agentService;
-        public AgentController(IAgentService agentService)
+        private IConfiguration _configuration;
+        public AgentController(IAgentService agentService, IConfiguration configuration)
         {
             _agentService = agentService;
+            _configuration = configuration;
+
         }
         [HttpGet,Authorize(Roles ="Admin")]
         public IActionResult Get()
@@ -46,6 +50,7 @@ namespace InsuranceProject.Controllers
         public IActionResult Add(AgentDto agentDto)
         {
             var agent = ConvertToModel(agentDto);
+            agent.Password = BCrypt.Net.BCrypt.HashPassword(agentDto.Password);
             var agentId = _agentService.Add(agent);
             if (agentId == null)
                 throw new EntityInsertError("Some errors Occurred");
@@ -74,6 +79,25 @@ namespace InsuranceProject.Controllers
             }
             throw new EntityNotFoundError("No Agent found to delete");
         }
+
+        [HttpPost("Login")]
+
+        public IActionResult Login(AgentDto agentDto)
+        {
+            var agent = _agentService.FindAgent(agentDto.UserName);
+            //admin.RoleId = 1;
+            var role = _agentService.GetRoleName(agent);
+            if (agent != null)
+            {
+                if (BCrypt.Net.BCrypt.Verify(agentDto.Password, agent.Password))
+                {
+                    //return Ok("Login Successful");
+                    string jwt = CreateToken<Agent>.CreateTokens(agent.UserName, role, _configuration);
+                    return Ok(jwt);
+                }
+            }
+            return BadRequest("UserName/Password dosesnt exist");
+        }
         private Agent ConvertToModel(AgentDto agentDto)
         {
             return new Agent()
@@ -88,7 +112,7 @@ namespace InsuranceProject.Controllers
                 TotalCommision = agentDto.TotalCommision,
                 Password = agentDto.Password,
                 IsActive = true,
-                RoleId = agentDto.RoleId,
+                RoleId = 2,
 
             };
         }
@@ -107,7 +131,7 @@ namespace InsuranceProject.Controllers
                 TotalCommision = agent.TotalCommision,
                 CountCustomer = agent.Customers != null ? agent.Customers.Count : 0,
                 CountCommision=agent.Commisions != null ? agent.Commisions.Count : 0,
-                RoleId=agent.RoleId,
+                //RoleId=agent.RoleId,
             };
         }
     }

@@ -11,5 +11,9 @@ namespace InsuranceProject.Services
         public Agent Update(Agent agent);
         public void Delete(Agent agent);
 
+        public Agent FindAgent(string username);
+
+        public string GetRoleName(Agent agent);
+
     }
 }
