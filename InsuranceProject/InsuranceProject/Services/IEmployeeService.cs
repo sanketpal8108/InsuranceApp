@@ -15,5 +15,9 @@ namespace InsuranceProject.Services
 
         public void Delete(Employee employee);
 
+        public Employee FindEmployee(string username);
+
+        public string GetRoleName(Employee employee);
+
     }
 }

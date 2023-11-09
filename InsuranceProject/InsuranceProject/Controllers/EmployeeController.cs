@@ -2,6 +2,7 @@
 using InsuranceProject.DTO;
 using InsuranceProject.Exceptions;
 using InsuranceProject.Services;
+using InsuranceProject.Token_Creation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,11 @@ namespace InsuranceProject.Controllers
     public class EmployeeController : ControllerBase
     {
         private IEmployeeService _employeeService;
-        public EmployeeController(IEmployeeService employeeService)
+        private IConfiguration _configuration;
+        public EmployeeController(IEmployeeService employeeService,IConfiguration configuration)
         {
             _employeeService = employeeService;
+            _configuration = configuration;
         }
         [HttpGet]
         public IActionResult Get()
@@ -45,6 +48,7 @@ namespace InsuranceProject.Controllers
         public IActionResult Add(EmployeeDto employeeDto)
         {
             var employee = ConvertToModel(employeeDto);
+            employee.Password = BCrypt.Net.BCrypt.HashPassword(employeeDto.Password);
             var employeeId = _employeeService.Add(employee);
             if (employeeId == null)
                 throw new EntityInsertError("Some errors Occurred");
@@ -73,6 +77,23 @@ namespace InsuranceProject.Controllers
             }
             throw new EntityNotFoundError("No Employee found to delete");
         }
+        [HttpPost("Login")]
+        public IActionResult Login(EmployeeDto employeeDto)
+        {
+            var employee = _employeeService.FindEmployee(employeeDto.UserName);
+            //admin.RoleId = 1;
+            var role = _employeeService.GetRoleName(employee);
+            if (employee != null)
+            {
+                if (BCrypt.Net.BCrypt.Verify(employeeDto.Password, employee.Password))
+                {
+                    //return Ok("Login Successful");
+                    string jwt = CreateToken<Employee>.CreateTokens(employee.UserName, role, _configuration);
+                    return Ok(jwt);
+                }
+            }
+            return BadRequest("UserName/Password dosesnt exist");
+        }
         private Employee ConvertToModel(EmployeeDto employeeDto)
         {
             return new Employee()
@@ -83,7 +104,7 @@ namespace InsuranceProject.Controllers
                 UserName = employeeDto.UserName,
                 Password = employeeDto.Password,
                 IsActive = true,
-                RoleId = employeeDto.RoleId,
+                RoleId = 4,
 
             };
         }
@@ -96,7 +117,7 @@ namespace InsuranceProject.Controllers
                 LastName = employee.LastName,
                 UserName = employee.UserName,
                 Password = employee.Password,
-                RoleId= employee.RoleId,
+                //RoleId= employee.RoleId,
 
 
             };

@@ -1,4 +1,5 @@
 ﻿using InsuranceDay1.Models;
+using InsuranceProject.Data;
 using InsuranceProject.Repository;
 
 namespace InsuranceProject.Services
@@ -6,10 +7,12 @@ namespace InsuranceProject.Services
     public class EmployeeService:IEmployeeService
     {
         private IEntityRepository<Employee> _entityRepository;
+        private MyContext _context;
 
-        public EmployeeService(IEntityRepository<Employee> entityRepository)
+        public EmployeeService(IEntityRepository<Employee> entityRepository, MyContext context)
         {
             _entityRepository = entityRepository;
+            _context = context;
         }
 
         public List<Employee> GetAll()
@@ -44,6 +47,15 @@ namespace InsuranceProject.Services
         public void Delete(Employee employee)
         {
             _entityRepository.Delete(employee);
+        }
+        public Employee FindEmployee(string username)
+        {
+            return _context.Employees.Where(user => user.UserName == username).FirstOrDefault();
+        }
+
+        public string GetRoleName(Employee employee)
+        {
+            return _context.Roles.Where(role => role.Id == employee.RoleId).FirstOrDefault().RoleName;
         }
     }
 }
