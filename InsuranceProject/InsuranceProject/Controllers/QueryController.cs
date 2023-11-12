@@ -3,6 +3,7 @@ using InsuranceProject.DTO;
 using InsuranceProject.Exceptions;
 using InsuranceProject.Service;
 using InsuranceProject.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace InsuranceProject.Controllers
         {
             _queryService = queryService;
         }
-        [HttpGet]
+        [HttpGet,Authorize(Roles ="Customer")]
         public IActionResult Get()
         {
             var queryDTO = new List<QueryDto>();

@@ -3,8 +3,10 @@ using InsuranceProject.DTO;
 using InsuranceProject.Exceptions;
 using InsuranceProject.Service;
 using InsuranceProject.Services;
+using InsuranceProject.Token_Creation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace InsuranceProject.Controllers
 {
@@ -13,9 +15,11 @@ namespace InsuranceProject.Controllers
     public class CustomerController : ControllerBase
     {
         private ICustomerService _customerService;
-        public CustomerController(ICustomerService customerService)
+        private IConfiguration _configuration;
+        public CustomerController(ICustomerService customerService, IConfiguration configuration)
         {
             _customerService = customerService;
+            _configuration = configuration;
         }
         [HttpGet]
         public IActionResult Get()
@@ -46,6 +50,7 @@ namespace InsuranceProject.Controllers
         public IActionResult Add(CustomerDto customerDto)
         {
             var customer = ConvertToModel(customerDto);
+            customer.Password = BCrypt.Net.BCrypt.HashPassword(customerDto.Password);
             var customerId = _customerService.Add(customer);
             if (customerId == null)
                 throw new EntityInsertError("Some errors Occurred");
@@ -74,6 +79,23 @@ namespace InsuranceProject.Controllers
             }
             throw new EntityNotFoundError("No Customer found to delete");
         }
+        [HttpPost("Login")]
+        public IActionResult Login(CustomerDto customerDto)
+        {
+            var customer = _customerService.FindCustomer(customerDto.UserName);
+            //admin.RoleId = 1;
+            var role = _customerService.GetRoleName(customer);
+            if (customer != null)
+            {
+                if (BCrypt.Net.BCrypt.Verify(customerDto.Password, customer.Password))
+                {
+                    //return Ok("Login Successful");
+                    string jwt = CreateToken<Customer>.CreateTokens(customer.UserName, role, _configuration);
+                    return Ok(jwt);
+                }
+            }
+            throw new EntityInsertError("UserName/Password dosesnt exist");
+        }
         private Customer ConvertToModel(CustomerDto customerDto)
         {
             return new Customer()
@@ -90,7 +112,7 @@ namespace InsuranceProject.Controllers
                 NomineeRelation = customerDto.NomineeRelation,
                 LocationId = customerDto.LocationId,
                 AgentId = customerDto.AgentId,
-                RoleId = customerDto.RoleId,
+                RoleId = 3,
 
                 IsActive = true
 
@@ -112,7 +134,7 @@ namespace InsuranceProject.Controllers
                NomineeRelation= customer.NomineeRelation,
                LocationId = customer.LocationId,
                AgentId = customer.AgentId,
-               RoleId = customer.RoleId,
+               //RoleId = customer.RoleId,
 
             };
         }

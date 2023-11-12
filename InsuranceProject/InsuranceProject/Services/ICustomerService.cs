@@ -11,5 +11,7 @@ namespace InsuranceProject.Services
         public int Add(Customer customer);
         public Customer Update(Customer customer);
         public void Delete(Customer customer);
+        public Customer FindCustomer(string username);
+        public string GetRoleName(Customer customer);
     }
 }

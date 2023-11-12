@@ -1,15 +1,21 @@
 ﻿using InsuranceDay1.Models;
 using InsuranceProject.Repository;
+using Microsoft.EntityFrameworkCore;
+using InsuranceProject.Data;
 
 namespace InsuranceProject.Services
 {
     public class CustomerService:ICustomerService
     {
         private IEntityRepository<Customer> _entityRepository;
+        private MyContext _context;
 
-        public CustomerService(IEntityRepository<Customer> entityRepository)
+
+        public CustomerService(IEntityRepository<Customer> entityRepository, MyContext context)
         {
             _entityRepository = entityRepository;
+            _context = context;
+
         }
 
         public List<Customer> GetAll()
@@ -44,6 +50,15 @@ namespace InsuranceProject.Services
         public void Delete(Customer customer)
         {
             _entityRepository.Delete(customer);
+        }
+        public Customer FindCustomer(string username)
+        {
+            return _context.Customers.Where(user => user.UserName == username).FirstOrDefault();
+        }
+
+        public string GetRoleName(Customer customer)
+        {
+            return _context.Roles.Where(role => role.Id == customer.RoleId).FirstOrDefault().RoleName;
         }
     }
 }
